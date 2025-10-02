@@ -34,7 +34,6 @@ def torre_hanoi_iterativa(n):
         torre_origen = torres[origen]
         torre_destino = torres[destino]
 
-        # Decidir movimiento válido
         if not torre_origen:
             torre_origen.append(torre_destino.pop())
             print(f"Paso {i}: Mover disco de {destino} → {origen}")
