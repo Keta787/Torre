@@ -1,58 +1,47 @@
-
-def mostrar_torres(A, B, C):
-    """Muestra el estado actual de las torres."""
-    print(f"Torre A: {A}")
-    print(f"Torre B: {B}")
-    print(f"Torre C: {C}")
-    print("-" * 30)
-
-def torre_hanoi_iterativa(n):
-    """
-    Resuelve la Torre de Hanoi de forma iterativa,
-    mostrando el contenido de las torres en cada paso.
-    """
-
+def hanoi_iterativo(n):
+    #Torre inicial
     A = list(range(n, 0, -1))  
     B = []
     C = []
+    total = 2 ** n - 1
 
+    print("Estado inicial:")
+    print("A:", A, "B:", B, "C:", C)
+    print("-" * 20)
 
-    torres = {'A': A, 'B': B, 'C': C}
-
-    print("\nEstado inicial:")
-    mostrar_torres(A, B, C)
-
+    # orden de movimientos depende de si n es par o impar
     if n % 2 == 0:
-        movimientos = [('A', 'B'), ('A', 'C'), ('B', 'C')]
+        pares = [("A", "B"), ("A", "C"), ("B", "C")]
     else:
-        movimientos = [('A', 'C'), ('A', 'B'), ('B', 'C')]
+        pares = [("A", "C"), ("A", "B"), ("B", "C")]
 
-    total_movimientos = 2 ** n - 1  
+    torres = {"A": A, "B": B, "C": C}
 
-    for i in range(1, total_movimientos + 1):
-        origen, destino = movimientos[(i - 1) % 3]
-        torre_origen = torres[origen]
-        torre_destino = torres[destino]
+    for i in range(1, total + 1):
+        o, d = pares[(i - 1) % 3]
+        origen = torres[o]
+        destino = torres[d]
 
-        if not torre_origen:
-            torre_origen.append(torre_destino.pop())
-            print(f"Paso {i}: Mover disco de {destino} → {origen}")
-        elif not torre_destino:
-            torre_destino.append(torre_origen.pop())
-            print(f"Paso {i}: Mover disco de {origen} → {destino}")
-        elif torre_origen[-1] < torre_destino[-1]:
-            torre_destino.append(torre_origen.pop())
-            print(f"Paso {i}: Mover disco de {origen} → {destino}")
+        # decidir el movimiento válido
+        if not origen:
+            origen.append(destino.pop())
+            print(f"Paso {i}: {d} -> {o}")
+        elif not destino:
+            destino.append(origen.pop())
+            print(f"Paso {i}: {o} -> {d}")
+        elif origen[-1] < destino[-1]:
+            destino.append(origen.pop())
+            print(f"Paso {i}: {o} -> {d}")
         else:
-            torre_origen.append(torre_destino.pop())
-            print(f"Paso {i}: Mover disco de {destino} → {origen}")
+            origen.append(destino.pop())
+            print(f"Paso {i}: {d} -> {o}")
+
+        print("A:", A, "B:", B, "C:", C)
+        print("-" * 20)
+
+    print("Movimientos totales:", total)
 
 
-        mostrar_torres(A, B, C)
-
-    print(f"\nTotal de movimientos: {total_movimientos}")
-
-
-
-n = int(input("Ingresa la cantidad de discos: "))
-torre_hanoi_iterativa(n)
+# Programa principal
+n = int(input("Número de discos: "))
+hanoi_iterativo(n)
